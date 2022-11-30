@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 class ResolutionDropdown : MonoBehaviour {
-
     [SerializeField] Dropdown dropdown;
     private List<Resolution> resolutions = new();
 
