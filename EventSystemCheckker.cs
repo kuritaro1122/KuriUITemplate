@@ -2,16 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using HyperNova;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
-namespace EventSystemExpansion {
-    //[AddComponentMenu("EventSystemExpansion/EventSystemCheckker")]
+namespace KuriTaro.EventSystemExpansion {
     public class EventSystemCheckker : MonoBehaviour {
         [SerializeField] EventSystem eventSystem;
         [SerializeField] bool ForceSelect = true;
-        [SerializeField, Disable] GameObject selectCurrent = null;
+        [SerializeField] GameObject selectCurrent = null;
         private GameObject preSelectGameObject = null;
         void Update() {
             if (this.eventSystem != null) this.eventSystem = EventSystem.current;
@@ -25,7 +23,7 @@ namespace EventSystemExpansion {
             }
             if (current != null) this.preSelectGameObject = current;
 
-            if (!DefaultAcceptButton() && HyperNova.InputControl.AcceptButton) {
+            if (!DefaultAcceptButton()) {
                 if (selectCurrent != null) {
                     if (this.selectCurrent.GetComponent<IPointerClickHandler>() == null) return;
                     var eventData = new PointerEventData(eventSystem);
@@ -33,20 +31,11 @@ namespace EventSystemExpansion {
                     eventData.pressPosition = this.selectCurrent.transform.position;
                     eventData.button = PointerEventData.InputButton.Left;
                     ExecuteEvents.Execute<IPointerClickHandler>(this.selectCurrent, eventData, (handler, ev) => handler.OnPointerClick((PointerEventData)ev));
-                 }
-            }
-            bool DefaultAcceptButton() {
-                if (Gamepad.current == null) {
-                    return Keyboard.current.enterKey.wasPressedThisFrame;
-                } else {
-                    return Keyboard.current.enterKey.wasPressedThisFrame || Gamepad.current.aButton.wasPressedThisFrame || Gamepad.current.crossButton.wasPressedThisFrame;
                 }
             }
-/*#if UNITY_EDITOR
-            Cursor.visible = this.selectCurrent != null && this.selectCurrent.activeInHierarchy;
-#else
-            Cursor.visible = false;
-#endif*/
+        }
+        protected virtual bool DefaultAcceptButton() {
+            return false;
         }
     }
 }
