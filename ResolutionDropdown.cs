@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 class ResolutionDropdown : MonoBehaviour {
     [SerializeField] Dropdown dropdown;
-    private List<Resolution> resolutions = new();
+    private List<Resolution> resolutions = new List<Resolution>();
 
     void Start() {
         SetDropdown();
@@ -16,13 +16,13 @@ class ResolutionDropdown : MonoBehaviour {
     private void SetDropdown() {
         this.dropdown.ClearOptions();
         int currentIndex = 0;
-        List<string> options = new();
+        List<string> options = new List<string>();
         int step = Screen.currentResolution.width / (640);
         int k = 0;
         for (int i = 0; i <= step; i++) {
             if (640 * i < 640) continue;
             Resolution resolution;
-            resolution = new();
+            resolution = new Resolution();
             resolution.width = 640 * i;
             resolution.height = 360 * i;
             this.resolutions.Add(resolution);
